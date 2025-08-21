@@ -19,6 +19,17 @@ then
   source "$ENV_FILE" # BASH syntax file that sets SOURCE= and DESTINATION=
 fi
 
+if test -z "$SOURCE"
+then
+  echo "Source directory (environment variable SOURCE) is missing. Aborting..." >&2
+  exit 1
+fi
+
+if test -z "$DESTINATION"
+then
+  echo "Destination directory (environment variable DESTINATION) is missing. Aborting..." >&2
+  exit 1
+fi
+
 TIMESTAMP=$( date -u --iso-8601=seconds | tr ':' '-' )
 rsync -a --log-file="$DESTINATION/$TIMESTAMP.log" --backup --backup-dir="overwritten-$TIMESTAMP" "$SOURCE/" "$DESTINATION/"
-
